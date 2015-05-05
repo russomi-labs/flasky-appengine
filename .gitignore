@@ -102,3 +102,5 @@ pyvenv.cfg
 pip-selfcheck.json
 
 
+# prevent .env from being commited to source
+.env
