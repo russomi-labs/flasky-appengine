@@ -12,6 +12,10 @@ The commits and tags in this repository were carefully created to match the sequ
 - Added SERVER_NAME to testing config to support running tests in PyCharm
 - Added MySQLdb support since running under Google App Engine dev server does not support importing sqlite
 - Added appengine_config.py to support vendoring
+- Add the following paramters when running dev_appserver.py to send email when running locally
+    ```
+    --smtp_host=smtp.googlemail.com --smtp_port=587 --smtp_user=<enter gmail address> --smtp_password=<enter password>
+    ```
 
 ## TODO
 
