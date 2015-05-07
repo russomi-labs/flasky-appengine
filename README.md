@@ -12,3 +12,11 @@ The commits and tags in this repository were carefully created to match the sequ
 - Added SERVER_NAME to testing config to support running tests in PyCharm
 - Added MySQLdb support since running under Google App Engine dev server does not support importing sqlite
 - Added appengine_config.py to support vendoring
+
+## TODO
+
+- [ ] Refactor GAE specific config into subclass of ProductionConfig
+- [ ] Move create_app() from manage.py into a main.py
+- [ ] Update manage.py to support deploying to Google App Engine and doing DB migrations
+- [ ] Update manage.py to run under Google App Engine dev environment
+- [ ] Relocate venv to outside of project root to avoid deploying it to GAE
