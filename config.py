@@ -1,4 +1,5 @@
 import os
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -20,7 +21,7 @@ class Config:
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOWERS_PER_PAGE = 50
     FLASKY_COMMENTS_PER_PAGE = 30
-    FLASKY_SLOW_DB_QUERY_TIME=0.5
+    FLASKY_SLOW_DB_QUERY_TIME = 0.5
 
     @staticmethod
     def init_app(app):
@@ -32,6 +33,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_dev'
     MAIL_USE_GAE = True
 
+
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_test'
@@ -39,10 +41,11 @@ class TestingConfig(Config):
     SERVER_NAME = 'localhost:5000'
     MAIL_USE_GAE = True
 
+
 class ProductionConfig(Config):
     MAIL_USE_GAE = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+                              'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
     @classmethod
     def init_app(cls, app):
@@ -51,6 +54,7 @@ class ProductionConfig(Config):
         # email errors to the administrators
         import logging
         from logging.handlers import SMTPHandler
+
         credentials = None
         secure = None
         if getattr(cls, 'MAIL_USERNAME', None) is not None:
@@ -77,11 +81,13 @@ class HerokuConfig(ProductionConfig):
 
         # handle proxy server headers
         from werkzeug.contrib.fixers import ProxyFix
+
         app.wsgi_app = ProxyFix(app.wsgi_app)
 
         # log to stderr
         import logging
         from logging import StreamHandler
+
         file_handler = StreamHandler()
         file_handler.setLevel(logging.WARNING)
         app.logger.addHandler(file_handler)
@@ -95,6 +101,7 @@ class UnixConfig(ProductionConfig):
         # log to syslog
         import logging
         from logging.handlers import SysLogHandler
+
         syslog_handler = SysLogHandler()
         syslog_handler.setLevel(logging.WARNING)
         app.logger.addHandler(syslog_handler)
