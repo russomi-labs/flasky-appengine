@@ -1,8 +1,10 @@
-import re
 import unittest
+
+import re
 from flask import url_for
 from app import create_app, db
 from app.models import User, Role
+
 
 class FlaskClientTestCase(unittest.TestCase):
     def setUp(self):
@@ -12,11 +14,22 @@ class FlaskClientTestCase(unittest.TestCase):
         db.create_all()
         Role.insert_roles()
         self.client = self.app.test_client(use_cookies=True)
+        if self.app.config['MAIL_USE_GAE']:
+            from google.appengine.ext import testbed
+
+            self.testbed = testbed.Testbed()
+            self.testbed.activate()
+            self.testbed.init_mail_stub()
+            self.mail_stub = self.testbed.get_stub(testbed.MAIL_SERVICE_NAME)
+
 
     def tearDown(self):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+        if self.testbed:
+            self.testbed.deactivate()
+
 
     def test_home_page(self):
         response = self.client.get(url_for('main.index'))
