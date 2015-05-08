@@ -19,8 +19,11 @@ The commits and tags in this repository were carefully created to match the sequ
 
 ## TODO
 
+- [x] Move create_app() from manage.py into a main.py
 - [ ] Refactor GAE specific config into subclass of ProductionConfig
-- [ ] Move create_app() from manage.py into a main.py
 - [ ] Update manage.py to support deploying to Google App Engine and doing DB migrations
 - [ ] Update manage.py to run under Google App Engine dev environment
 - [ ] Relocate venv to outside of project root to avoid deploying it to GAE
+- [ ] Take a look at this script... https://github.com/anler/App-Engine-runserver.py/blob/master/runserver.py
+- [ ] Relocate venv to avoid deploying to App Engine
+- [ ] Add instructions on how to install mysql locally
