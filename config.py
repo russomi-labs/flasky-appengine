@@ -107,12 +107,21 @@ class UnixConfig(ProductionConfig):
         app.logger.addHandler(syslog_handler)
 
 
+class GoogleAppEngineDevelopmentConfig(DevelopmentConfig):
+    MAIL_USE_GAE = True
+
+
+class GoogleAppEngineProductionConfig(ProductionConfig):
+    MAIL_USE_GAE = True
+
+
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
     'heroku': HerokuConfig,
     'unix': UnixConfig,
-    # 'gae': GoogleAppEngineConfig,
+    'gae-dev': GoogleAppEngineDevelopmentConfig,
+    'gae': GoogleAppEngineProductionConfig,
     'default': DevelopmentConfig
 }
