@@ -38,6 +38,37 @@ def test(coverage=False):
 
         os.environ['FLASK_COVERAGE'] = '1'
         os.execvp(sys.executable, [sys.executable] + sys.argv)
+
+    # TODO(russomi): Change this to a non MAIL_USE_GAE flag and refactor this to a util function
+    if os.environ.get('MAIL_USE_GAE'):
+        import sys
+
+        # TODO(russomi): replace hard coded string to use a function
+        sdk_path = '~/google-cloud-sdk/platform/google_appengine'
+
+        # If the sdk path points to a google cloud sdk installation
+        # then we should alter it to point to the GAE platform location.
+        if os.path.exists(os.path.join(sdk_path, 'platform/google_appengine')):
+            sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
+        else:
+            sys.path.insert(0, sdk_path)
+
+        # Ensure that the google.appengine.* packages are available
+        # in tests as well as all bundled third-party packages.
+        import dev_appserver
+
+        dev_appserver.fix_sys_path()
+
+        # Loading appengine_config from the current project ensures that any
+        # changes to configuration there are available to all tests (e.g.
+        # sys.path modifications, namespaces, etc.)
+        try:
+            import appengine_config
+
+            (appengine_config)
+        except ImportError:
+            print "Note: unable to import appengine_config."
+
     import unittest
 
     tests = unittest.TestLoader().discover('tests')
