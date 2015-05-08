@@ -107,3 +107,5 @@ pip-selfcheck.json
 
 
 tmp
+
+.appengine_data/
