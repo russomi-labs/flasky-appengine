@@ -2,21 +2,31 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+# Any sensitive config items must be sourced from os.environ to avoid
+# checking them into source control
+# class GoogleAppEngineConfig:
+#     gae = bool(os.environ['SERVER_SOFTWARE'].startswith('Google App Engine'))
+#     is_local = bool(os.environ['SERVER_SOFTWARE'].startswith('Development'))
+#     is_gae = bool(gae or is_local)
+#
+#     GAE_MODE = is_gae
+#     GAE_DEV_APPSERVER = is_local
+#     GAE_SDK_PATH = os.environ['GAE_SDK_PATH'] or '~/google-cloud-sdk/platform/google_appengine'
+#     FLASKY_MAIL_SENDER = 'flasky@example.com'
+
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     SSL_DISABLE = False
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_RECORD_QUERIES = True
-    MAIL_USE_GAE = False
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
-    # FLASKY_MAIL_SENDER = 'Flasky Admin <flasky@example.com>'
-    FLASKY_MAIL_SENDER = 'flasky@example.com'
+    FLASKY_MAIL_SENDER = 'Flasky Admin <flasky@example.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOWERS_PER_PAGE = 50
@@ -107,13 +117,17 @@ class UnixConfig(ProductionConfig):
         app.logger.addHandler(syslog_handler)
 
 
-class GoogleAppEngineDevelopmentConfig(DevelopmentConfig):
-    MAIL_USE_GAE = True
+# class GoogleAppEngineDevelopmentConfig(Config, GoogleAppEngineConfig):
+#     GAE_SDK_PATH = '~/google-cloud-sdk/platform/google_appengine'
+#     GAE_DEV_APPSERVER = bool(os.environ['SERVER_SOFTWARE'].startswith('Development'))
+#     FLASKY_MAIL_SENDER = 'flasky@example.com'
+#
 
-
-class GoogleAppEngineProductionConfig(ProductionConfig):
-    MAIL_USE_GAE = True
-
+# class GoogleAppEngineDevelopmentConfig(Config, GoogleAppEngineConfig):
+#     GAE_SDK_PATH = '~/google-cloud-sdk/platform/google_appengine'
+#     GAE_DEV_APPSERVER = bool(os.environ['SERVER_SOFTWARE'].startswith('Development'))
+#     FLASKY_MAIL_SENDER = 'flasky@example.com'
+#
 
 config = {
     'development': DevelopmentConfig,
@@ -121,7 +135,6 @@ config = {
     'production': ProductionConfig,
     'heroku': HerokuConfig,
     'unix': UnixConfig,
-    'gae-dev': GoogleAppEngineDevelopmentConfig,
-    'gae': GoogleAppEngineProductionConfig,
+
     'default': DevelopmentConfig
 }
