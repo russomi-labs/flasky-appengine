@@ -21,7 +21,7 @@ The commits and tags in this repository were carefully created to match the sequ
 
 ### Prerequisites
 
-1. Install the [PHP SDK for Google App Engine](https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_PHP)
+1. Install the Google App Engine SDK
 2. Install [MySQL](http://dev.mysql.com/downloads/)
 3. [Sign up](http://cloud.google.com/console) for a Google Cloud Platform project, and
 set up a Cloud SQL instance, as described [here](https://developers.google.com/cloud-sql/docs/instances), and a
@@ -39,26 +39,37 @@ select the checkbox next to the bucket you created in step 3, click
 #### Step 1: Clone
 Clone this git repo and its submodules by running the following commands:
 
-    git clone --recursive https://github.com/GoogleCloudPlatform/appengine-php-wordpress-starter-project.git
-    cd appengine-php-wordpress-starter-project/
+    $ git clone https://github.com/russomi/flasky.git
+    $ cd flasky/
 
-#### Step 2: Install Dependancies
-Clone this git repo and its submodules by running the following commands:
+#### Step 2: Create virtualenv
+Create the virtualenv:
 
-    git clone --recursive https://github.com/GoogleCloudPlatform/appengine-php-wordpress-starter-project.git
-    cd appengine-php-wordpress-starter-project/
+    $ virtualenv venv
+    $ source venv/bin/activate
+    
+#### Step 3: Install requirements
+Install requirements into local lib folder:
 
-#### Step 3: Edit Config
-Clone this git repo and its submodules by running the following commands:
+    $ pip install -t lib -r requirements/dev.txt
 
-    git clone --recursive https://github.com/GoogleCloudPlatform/appengine-php-wordpress-starter-project.git
-    cd appengine-php-wordpress-starter-project/
+#### Step 4: Add `lib` directory to virtualenv
+Add lib folder to the virtualenv:
 
-#### Step 4: Run Tests
-Clone this git repo and its submodules by running the following commands:
+    $ add2virtualenv lib
 
-    git clone --recursive https://github.com/GoogleCloudPlatform/appengine-php-wordpress-starter-project.git
-    cd appengine-php-wordpress-starter-project/
+#### Step 5: 
+Add google_appengine sdk and lib folder to the virtualenv:
+
+    $ add2virtualenv lib
+    $ add2virtualenv ~/google-cloud-sdk/platform/google_appengine
+
+
+
+
+
+
+
 
 ## Running locally
 
