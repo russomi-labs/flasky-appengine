@@ -1,18 +1,26 @@
+# Any sensitive config items must be sourced from os.environ to avoid
+# checking them into source control
+
+import logging
+
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+logging.debug('basedir: {msg}'.format(msg=basedir))
 
-# Any sensitive config items must be sourced from os.environ to avoid
-# checking them into source control
-# class GoogleAppEngineConfig:
-#     gae = bool(os.environ['SERVER_SOFTWARE'].startswith('Google App Engine'))
-#     is_local = bool(os.environ['SERVER_SOFTWARE'].startswith('Development'))
-#     is_gae = bool(gae or is_local)
-#
-#     GAE_MODE = is_gae
-#     GAE_DEV_APPSERVER = is_local
-#     GAE_SDK_PATH = os.environ['GAE_SDK_PATH'] or '~/google-cloud-sdk/platform/google_appengine'
-#     FLASKY_MAIL_SENDER = 'flasky@example.com'
+SERVER_SOFTWARE = os.getenv('SERVER_SOFTWARE', '')
+
+is_deployed = bool(SERVER_SOFTWARE.startswith('Google App Engine'))
+logging.debug('is_deployed: {msg}'.format(msg=is_deployed))
+
+is_local = bool(SERVER_SOFTWARE.startswith('Development'))
+logging.debug('is_local: {msg}'.format(msg=is_local))
+
+is_gae = bool(is_deployed or is_local)
+logging.debug('is_gae: {msg}'.format(msg=is_gae))
+
+GAE_SDK_PATH = os.getenv('GAE_SDK_PATH', '') or '~/google-cloud-sdk/platform/google_appengine'
+logging.debug('GAE_SDK_PATH: {msg}'.format(msg=GAE_SDK_PATH))
 
 
 class Config:
@@ -42,6 +50,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_dev'
     MAIL_USE_GAE = True
+    FLASKY_MAIL_SENDER = 'russomi.dev.email@gmail.com'
 
 
 class TestingConfig(Config):
@@ -116,18 +125,6 @@ class UnixConfig(ProductionConfig):
         syslog_handler.setLevel(logging.WARNING)
         app.logger.addHandler(syslog_handler)
 
-
-# class GoogleAppEngineDevelopmentConfig(Config, GoogleAppEngineConfig):
-#     GAE_SDK_PATH = '~/google-cloud-sdk/platform/google_appengine'
-#     GAE_DEV_APPSERVER = bool(os.environ['SERVER_SOFTWARE'].startswith('Development'))
-#     FLASKY_MAIL_SENDER = 'flasky@example.com'
-#
-
-# class GoogleAppEngineDevelopmentConfig(Config, GoogleAppEngineConfig):
-#     GAE_SDK_PATH = '~/google-cloud-sdk/platform/google_appengine'
-#     GAE_DEV_APPSERVER = bool(os.environ['SERVER_SOFTWARE'].startswith('Development'))
-#     FLASKY_MAIL_SENDER = 'flasky@example.com'
-#
 
 config = {
     'development': DevelopmentConfig,
