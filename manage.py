@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+import sys
 import os
+
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -31,27 +33,23 @@ def make_shell_context():
 
 
 @manager.command
-def test(coverage=False):
+def test(coverage=False, with_gae=True, flask_config=''):
     """Run the unit tests."""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
-        import sys
-
         os.environ['FLASK_COVERAGE'] = '1'
         os.execvp(sys.executable, [sys.executable] + sys.argv)
 
-    # TODO(russomi): Change this to a non MAIL_USE_GAE flag and refactor this to a util function
-    if os.environ.get('MAIL_USE_GAE'):
-        import sys
+    if with_gae:
+        # we assume the sdk is available on the path
 
-        # TODO(russomi): replace hard coded string to use a function
-        sdk_path = '~/google-cloud-sdk/platform/google_appengine'
+        # sdk_path = '~/google-cloud-sdk/platform/google_appengine'
 
         # If the sdk path points to a google cloud sdk installation
         # then we should alter it to point to the GAE platform location.
-        if os.path.exists(os.path.join(sdk_path, 'platform/google_appengine')):
-            sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
-        else:
-            sys.path.insert(0, sdk_path)
+        # if os.path.exists(os.path.join(sdk_path, 'platform/google_appengine')):
+        # sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
+        # else:
+        #     sys.path.insert(0, sdk_path)
 
         # Ensure that the google.appengine.* packages are available
         # in tests as well as all bundled third-party packages.
