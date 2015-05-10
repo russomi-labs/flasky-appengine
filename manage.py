@@ -33,7 +33,7 @@ def make_shell_context():
 
 
 @manager.command
-def test(coverage=False, with_gae=True, flask_config=''):
+def test(coverage=False, with_gae=True, flask_config='testing'):
     """Run the unit tests."""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
         os.environ['FLASK_COVERAGE'] = '1'
