@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+
 import os
 
 
@@ -35,37 +36,43 @@ def make_shell_context():
 @manager.command
 def test(coverage=False, with_gae=True, flask_config='testing'):
     """Run the unit tests."""
+
     if coverage and not os.environ.get('FLASK_COVERAGE'):
         os.environ['FLASK_COVERAGE'] = '1'
         os.execvp(sys.executable, [sys.executable] + sys.argv)
 
     if with_gae:
         # we assume the sdk is available on the path
-
         # sdk_path = '~/google-cloud-sdk/platform/google_appengine'
 
         # If the sdk path points to a google cloud sdk installation
         # then we should alter it to point to the GAE platform location.
+
         # if os.path.exists(os.path.join(sdk_path, 'platform/google_appengine')):
-        # sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
+        #     sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
         # else:
         #     sys.path.insert(0, sdk_path)
 
         # Ensure that the google.appengine.* packages are available
         # in tests as well as all bundled third-party packages.
-        import dev_appserver
 
-        dev_appserver.fix_sys_path()
+        def fix_sys_path():
 
-        # Loading appengine_config from the current project ensures that any
-        # changes to configuration there are available to all tests (e.g.
-        # sys.path modifications, namespaces, etc.)
-        try:
-            import appengine_config
+            import dev_appserver
 
-            (appengine_config)
-        except ImportError:
-            print "Note: unable to import appengine_config."
+            dev_appserver.fix_sys_path()
+
+            # Loading appengine_config from the current project ensures that any
+            # changes to configuration there are available to all tests (e.g.
+            # sys.path modifications, namespaces, etc.)
+            try:
+                import appengine_config
+
+                (appengine_config)
+            except ImportError:
+                print "Note: unable to import appengine_config."
+
+        fix_sys_path()
 
     import unittest
 
@@ -127,7 +134,7 @@ def hello(name="Fred"):
     print "hello", name
 
 
-class Dev_appserver(Command):
+class DevAppserver(Command):
     option_list = (
         Option('-y', '--yaml_path', dest='yaml_path', default='.'),
         Option('-l', '--log_level', dest='log_level', default='debug'),
@@ -164,7 +171,7 @@ class Dev_appserver(Command):
 
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
-manager.add_command('dev_appserver', Dev_appserver)
+manager.add_command('dev_appserver', DevAppserver)
 
 if __name__ == '__main__':
     manager.run()

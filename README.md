@@ -53,22 +53,27 @@ Install requirements into local lib folder:
 
     $ pip install -t lib -r requirements/dev.txt
 
-#### Step 4: Add `lib` directory to virtualenv
-Add lib folder to the virtualenv:
-
-    $ add2virtualenv lib
-
-#### Step 5: 
+#### Step 4: Add `lib` and google_appengine SDK directory to virtualenv
 Add google_appengine sdk and lib folder to the virtualenv:
 
     $ add2virtualenv lib
     $ add2virtualenv ~/google-cloud-sdk/platform/google_appengine
 
+##### Tip:
+- If the library is provided by the google app engine environment, ```pip install``` into the virtualenv.
+- If the library is not provided by the google app engine environment, ```pip install -t lib``` directory.
 
 
+## TODO
 
-
-
+- [ ] Create new repo and delete fork - flasky-appengine?
+- [ ] Update manage.py to support deploying to Google App Engine and doing DB migrations
+- [ ] Add instructions on how to setup local development
+- [x] Move create_app() from manage.py into a main.py
+- [x] Update manage.py to run under Google App Engine dev environment
+- [x] Relocate venv to outside of project root to avoid deploying it to GAE
+- [x] Refactor GAE specific config into subclass of ProductionConfig
+- [x] Take a look at this script... https://github.com/anler/App-Engine-runserver.py/blob/master/runserver.py
 
 
 ## Running locally
@@ -135,12 +140,3 @@ Or, to install directly from the root URL, you can define WP_SITEURL in your `wp
     define( 'WP_SITEURL', 'http://<YOUR_PROJECT_ID>.appspot.com/');
 
 
-## TODO
-
-- [x] Move create_app() from manage.py into a main.py
-- [x] Update manage.py to run under Google App Engine dev environment
-- [x] Relocate venv to outside of project root to avoid deploying it to GAE
-- [ ] Refactor GAE specific config into subclass of ProductionConfig
-- [ ] Update manage.py to support deploying to Google App Engine and doing DB migrations
-- [ ] Take a look at this script... https://github.com/anler/App-Engine-runserver.py/blob/master/runserver.py
-- [ ] Add instructions on how to install mysql locally

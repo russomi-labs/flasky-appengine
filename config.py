@@ -16,13 +16,14 @@ logging.debug('is_deployed: {msg}'.format(msg=is_deployed))
 is_local = bool(SERVER_SOFTWARE.startswith('Development'))
 logging.debug('is_local: {msg}'.format(msg=is_local))
 
-is_gae = bool(is_deployed or is_local)
-logging.debug('is_gae: {msg}'.format(msg=is_gae))
+is_google_appengine = bool(is_deployed or is_local)
+logging.debug('is_google_appengine: {msg}'.format(msg=is_google_appengine))
 
-GAE_SDK_PATH = os.getenv('GAE_SDK_PATH', '') or '~/google-cloud-sdk/platform/google_appengine'
-logging.debug('GAE_SDK_PATH: {msg}'.format(msg=GAE_SDK_PATH))
+APP_ENGINE_SDK_PATH = os.getenv('APP_ENGINE_SDK_PATH', '') or '~/google-cloud-sdk/platform/google_appengine'
+logging.debug('APP_ENGINE_SDK_PATH: {msg}'.format(msg=APP_ENGINE_SDK_PATH))
 
 
+# noinspection PyClassHasNoInit
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
     SSL_DISABLE = False
@@ -46,6 +47,7 @@ class Config:
         pass
 
 
+# noinspection PyClassHasNoInit
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_dev'
@@ -53,6 +55,7 @@ class DevelopmentConfig(Config):
     FLASKY_MAIL_SENDER = 'russomi.dev.email@gmail.com'
 
 
+# noinspection PyClassHasNoInit
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_test'
@@ -61,6 +64,7 @@ class TestingConfig(Config):
     MAIL_USE_GAE = True
 
 
+# noinspection PyClassHasNoInit
 class ProductionConfig(Config):
     MAIL_USE_GAE = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
@@ -91,6 +95,7 @@ class ProductionConfig(Config):
         app.logger.addHandler(mail_handler)
 
 
+# noinspection PyClassHasNoInit
 class HerokuConfig(ProductionConfig):
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 
@@ -112,6 +117,7 @@ class HerokuConfig(ProductionConfig):
         app.logger.addHandler(file_handler)
 
 
+# noinspection PyClassHasNoInit
 class UnixConfig(ProductionConfig):
     @classmethod
     def init_app(cls, app):
