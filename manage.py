@@ -49,7 +49,7 @@ def test(coverage=False, with_gae=True, flask_config='testing'):
         # then we should alter it to point to the GAE platform location.
 
         # if os.path.exists(os.path.join(sdk_path, 'platform/google_appengine')):
-        #     sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
+        # sys.path.insert(0, os.path.join(sdk_path, 'platform/google_appengine'))
         # else:
         #     sys.path.insert(0, sdk_path)
 
@@ -135,6 +135,9 @@ def hello(name="Fred"):
 
 
 class DevAppserver(Command):
+    """
+    Command to run the Google App Engine dev_appserver.py with defaults
+    """
     option_list = (
         Option('-y', '--yaml_path', dest='yaml_path', default='.'),
         Option('-l', '--log_level', dest='log_level', default='debug'),
