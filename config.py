@@ -1,9 +1,13 @@
-# Any sensitive config items must be sourced from os.environ to avoid
-# checking them into source control
+""" configuration defaults based on environment """
 
 import logging
 
 import os
+
+"""
+Any sensitive config items must be sourced from os.environ to avoid
+checking them into source control
+"""
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 logging.debug('basedir: {msg}'.format(msg=basedir))
