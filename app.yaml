@@ -6,8 +6,11 @@
 # TODO: Enter your application id below. If you have signed up
 # using cloud.google.com/console use the "project id" for your application
 # id.
-application: your-application-id-here
-version: v0-0-0-alpha
+
+# application and version are no longer supported with gcloud!
+# application: your-application-id-here
+# version: v0-0-0-alpha
+
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -39,6 +42,7 @@ handlers:
 # project directory, either as a git submodule or as a plain subdirectory.
 # TODO: List any other App Engine SDK libs you may need here.
 libraries:
+# we are going to push up our copy of jinja2
 #- name: jinja2
 #  version: latest
 - name: MySQLdb
