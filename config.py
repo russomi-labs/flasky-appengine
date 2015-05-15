@@ -70,6 +70,7 @@ class TestingConfig(Config):
 
 # noinspection PyClassHasNoInit
 class ProductionConfig(Config):
+    FLASKY_MAIL_SENDER = 'Flasky Admin <flasky@russomi-apps.appspotmail.com>'
     MAIL_USE_GAE = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
                               'mysql+mysqldb://root@/flasky_appengine_production?unix_socket=/cloudsql/russomi-apps:production'
