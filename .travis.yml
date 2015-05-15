@@ -71,7 +71,7 @@ script:
   ### Examples:
   # - python testrunner.py $HOME/gcloud/google-cloud-sdk ./tests
   # - coverage run --source . testrunner.py $HOME/gcloud/google-cloud-sdk ./tests
-  - coverage run --source . manage.py test
+  - coverage run --source app manage.py test
 
 after_success:
   - coveralls
