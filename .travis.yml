@@ -59,6 +59,7 @@ install:
   - pip install coveralls
   - source virtualenvwrapper.sh
   - add2virtualenv ./lib
+  - add2virtualenv $HOME/gcloud/google-cloud-sdk/platform/google_appengine
 
   ### Update gcloud project name
   - gcloud config set project russomi-apps
