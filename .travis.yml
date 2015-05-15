@@ -45,7 +45,7 @@ before_install:
     fi
 
   ## update to the latest components
-  - gcloud -q components update
+  - gcloud -q components update app
 
   ## use client_secrets.json to auth against gcloud
   - if [ -a client_secrets.json ]; then
