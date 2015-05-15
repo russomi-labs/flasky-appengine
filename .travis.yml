@@ -60,6 +60,7 @@ install:
   - source virtualenvwrapper.sh
   - add2virtualenv ./lib
   - add2virtualenv $HOME/gcloud/google-cloud-sdk/platform/google_appengine
+  - which dev_appserver.py
 
   ### Update gcloud project name
   - gcloud config set project russomi-apps
