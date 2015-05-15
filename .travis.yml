@@ -9,14 +9,15 @@ env:
   global:
     - PATH=$PATH:$HOME/gcloud/google-cloud-sdk/bin GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/client_secrets.json
     - versionlabel=$(git rev-parse --abbrev-ref HEAD)-$(date -u +"%Y%m%d-%H%M%S")
-    - secure: "OWPfK1+rO/TKd4UpBNqvp+WBIX0MPdBBjxzOYSP6/CYHj4JI9OhVNex7SP/iCdP6dB5sfcTVDK7RXO7tpvv5sOni49QG1nkX1CSQ+Ugouxr+nbsh1gWVxkgVH6nUZ0OPswCiy2aNy+B3Z9/AMrWmo4U28E5buoKK4VuAmMK7m/D5vUhb9Pv6kVS7HSPmEOUVEz90I0nTSsLzK65gZez+wLvAFH5Tf/ujnJi9rhRjGalImvjicqJ1uK6QTiFsf7skMxcfY7TO+C6L0AzniZGImEsqhZ5YTwqyq1oMwhbXTNGSC22TeUG8Noqx/VzyoccuvOXRBIn+wTyCydKDypBsrONpHQBE/osZ7g8h3+lZ8yai41kSKLNRmIoId4wqmmgy8qC7b3Cw58Ddp3o9tMVMDeoKcX0DGohavOuu1WpatmXqa8pXeW+lumkpI3s4WOFlHXQYKKTNoMiFphYc0pXDclxsMJ/j3vvIHz928u8VR/ffiEvEww6txDThn8PQfq5oVKw3EuMYondEnVmCxIKRHs8qWXZBW11pDpNuOT+T8IxA9LTyAFwjPDJUWWXvNu8IcSHrHFYUBU3u/SD4L/aaIN/UKVqA9QQ00vIRx3m0d6ITzx0m5674MK5S/yXTSTT1+ZdB3pYNsZ/KyEw5BDIo41RwM8pOfPV0i8IZ5RgDiHM="
-    - secure: "UU0Hexpg/VArEgZP4ECR/m7DIANbQM6DUfI3tUzzUeRb9uMMmwi9VEnzAYvzrur3A6QmFDsh1fd29O3R1uXJVYkUm3mnsM3/HcUBl0j/9TAllKBU/E6Cy2HddVTWy9tWOx8MKW9AxReJnuPLaQsmyhr7eMm6a9pMJsy7gSHMapte+yzQ2Vvs32DOs88kVG4zQS0GhBiUsuCd5jXOALHtJxyaZh51v0jEB/eYq2mJYXXG05IluKHd300hmcD5nczbaJxSVRmCwEHpC+tpT0oj1fAQkbRKVaUcDljboKHvC2T4FkP8tFBvJ78vWzEyxCaQybSzWTapl7XXEQy6Qv/5/C7N6MzN9SEBWx/pbbwDV7KJb8Pz6AoM7RWWRyj/KlEeLCoApDR/YRjzyVzKfEFMW6AttFtHu8zl+V+5jygJw54CpiTAMG5RwXZlQ3t6c9jJHaaaE2ifpPJ9WaLTu7RhB/aqT5QgaGHblmnG7T8inJgqmR0txZ9CXa8CQ7u4nrLdqGA/cG5SXJK54MZZrhVxqMB3gNW6jO1NGx/yFweJ8UG38NAH8PkFPbVJU38OrmeTe7Ocm8DfRPEimqt3pg3+SbAtVe3wHcjc1QTUWU92WYntgglnOakVifD8tG9dXQ5dSQLeBoEBulscSkxbgTtytYKyPq8V+VmbPWgoyPKfnTs="
-
     ### define secure env variables for TEST_DB and PROD_DB
-    ### example:
+    ### examples:
     ### travis encrypt TEST_DB='mysql://root:@localhost/migrate_dev'
     # - TEST_DB='mysql://root:@localhost/migrate_test'
     # - PROD_DB='mysql://root:@localhost/migrate_prod'
+    #
+    # the default FLASK_CONFIG for testing has the correct DATABASE_URL
+    # - Use DATABASE_URL = $PROD_DB for migrations (encrypted)
+    - secure: "plxL5MLJXifjuQzBgwXv5PRBoIB/ysTM1UvCGt91uJpDJLZ2EUV39p/VmzlYI5y6bXQsMYw6zuPX5pAGnlTkoxZMKyoJNqEIdro6Z60bMrhWv7JDz/8AvDv3Bp/2rzxctBWAl5UMnhgtfpBO2VItHLMByWJjB9nS4MIEM1gt3PeyDtBohobNYTQIYWtf3RB1NUsXKv2gLstuOLT3ey+rqHNgSfnfM+T7tXLaM9vBZNETm5IjBbrWZk1tg9kWJ5Er97cdxk9BvM/Js9rCUrCv8iOVk6uFgS6qN3yNuPSU+cFcLVtnYCnQ263M6QQ8x7scporUYQfx1awxmgN/32tKEh2C0cWGLgsjfgy9oW/dRwHN5s3C6MBIb664UvRbuZ7bzY5cX79t4r3spFyv2F5lze8E9siBEp+9of+DbSzG6BWrlU4rD3i9euR5csLM0LtNVFq1Q06IAdpz8KQKTLr3R1Gva7dunTswecKzfAd/gw9tSUDfDFQgM5uCGpf2dxHGX7VuPJzBl86heN46aeZzuFiNYsSaN9rujtd//GkLXmDa876TyW3cgJAWSXv4wRKUyiCKCpfeF9Y9IuWp6n4bA0mqYKh9dy+ObAt5LXRYZ4nowzRS9COguYvvIt1NmEoEsf3itXp13IjPfCemiN5QXXe9BfpKAoV8j/I4zprlRQg="
 
 before_install:
     # ENCRYPT YOUR PRIVATE KEY (If you need authentication)
@@ -64,7 +65,7 @@ install:
 
 before_script:
   - mysql -e 'create database flasky_appengine_test;'
-  - TARGET_DB=$TEST_DB python manage.py db upgrade
+  - FLASK_CONFIG=testing python manage.py db upgrade
 
 script:
   ### Examples:
@@ -75,5 +76,6 @@ script:
 after_success:
   - coveralls
   - gcloud -q preview app deploy app.yaml --version=1
-  ### commenting this out since the dedicated ip addy was removed to avoid costs!
-  - TARGET_DB=$PROD_DB python manage.py db upgrade
+  # We have to override the DATABASE_URL since we need to allow travis to do the DB migration
+  # remotely!
+  - FLASK_CONFIG=production DATABASE_URL=$PROD_DB python manage.py db upgrade

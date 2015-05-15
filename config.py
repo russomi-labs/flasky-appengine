@@ -62,7 +62,7 @@ class DevelopmentConfig(Config):
 # noinspection PyClassHasNoInit
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_test'
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/flasky_appengine_test'
     WTF_CSRF_ENABLED = False
     SERVER_NAME = 'localhost:5000'
     MAIL_USE_GAE = True
@@ -72,31 +72,31 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     MAIL_USE_GAE = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+                              'mysql://root:@russomi-apps:production/flasky_appengine_production'
 
-    @classmethod
-    def init_app(cls, app):
-        Config.init_app(app)
-
-        # email errors to the administrators
-        import logging
-        from logging.handlers import SMTPHandler
-
-        credentials = None
-        secure = None
-        if getattr(cls, 'MAIL_USERNAME', None) is not None:
-            credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
-            if getattr(cls, 'MAIL_USE_TLS', None):
-                secure = ()
-        mail_handler = SMTPHandler(
-            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
-            fromaddr=cls.FLASKY_MAIL_SENDER,
-            toaddrs=[cls.FLASKY_ADMIN],
-            subject=cls.FLASKY_MAIL_SUBJECT_PREFIX + ' Application Error',
-            credentials=credentials,
-            secure=secure)
-        mail_handler.setLevel(logging.ERROR)
-        app.logger.addHandler(mail_handler)
+    # @classmethod
+    # def init_app(cls, app):
+    #     Config.init_app(app)
+    #
+    #     # email errors to the administrators
+    #     import logging
+    #     from logging.handlers import SMTPHandler
+    #
+    #     credentials = None
+    #     secure = None
+    #     if getattr(cls, 'MAIL_USERNAME', None) is not None:
+    #         credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
+    #         if getattr(cls, 'MAIL_USE_TLS', None):
+    #             secure = ()
+    #     mail_handler = SMTPHandler(
+    #         mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+    #         fromaddr=cls.FLASKY_MAIL_SENDER,
+    #         toaddrs=[cls.FLASKY_ADMIN],
+    #         subject=cls.FLASKY_MAIL_SUBJECT_PREFIX + ' Application Error',
+    #         credentials=credentials,
+    #         secure=secure)
+    #     mail_handler.setLevel(logging.ERROR)
+    #     app.logger.addHandler(mail_handler)
 
 
 # noinspection PyClassHasNoInit
