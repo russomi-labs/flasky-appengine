@@ -54,7 +54,8 @@ before_install:
 
 install:
   ## app specific setup
-  - pip install -t lib -r requirements/dev.txt
+  - pip install -t lib -r requirements/common.txt
+  - pip install -r requirements/dev.txt
   - pip install virtualenvwrapper
   - pip install coveralls
   - source virtualenvwrapper.sh
