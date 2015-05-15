@@ -1,4 +1,4 @@
-Flasky
+Flasky [![Build Status](https://travis-ci.org/russomi/flasky-appengine.svg?branch=add-travis-ci)](https://travis-ci.org/russomi/flasky-appengine) [![Coverage Status](https://coveralls.io/repos/russomi/flasky-appengine/badge.svg)](https://coveralls.io/r/russomi/flasky-appengine)
 ======
 
 This repository contains the source code examples for my O'Reilly book [Flask Web Development](http://www.flaskbook.com).
@@ -66,9 +66,10 @@ Add google_appengine sdk and lib folder to the virtualenv:
 
 ## TODO
 
-- [ ] Create new repo and delete fork - flasky-appengine?
-- [ ] Update manage.py to support deploying to Google App Engine and doing DB migrations
+- [ ] Setup new Google Cloud project and Identify SQL server
 - [ ] Add instructions on how to setup local development
+- [ ] Update manage.py to support deploying to Google App Engine and doing DB migrations
+- [x] Create new repo and delete fork - flasky-appengine?
 - [x] Move create_app() from manage.py into a main.py
 - [x] Update manage.py to run under Google App Engine dev environment
 - [x] Relocate venv to outside of project root to avoid deploying it to GAE

@@ -109,3 +109,5 @@ pip-selfcheck.json
 tmp
 
 .appengine_data/
+
+client_secrets.json

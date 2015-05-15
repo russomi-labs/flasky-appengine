@@ -1,0 +1,81 @@
+sudo: false
+language: python
+python:
+  - '2.7'
+cache:
+  directories:
+  - $HOME/gcloud/
+env:
+  global:
+    - PATH=$PATH:$HOME/gcloud/google-cloud-sdk/bin GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/client_secrets.json
+    - versionlabel=$(git rev-parse --abbrev-ref HEAD)-$(date -u +"%Y%m%d-%H%M%S")
+    ### define secure env variables for TEST_DB and PROD_DB
+    ### examples:
+    ### travis encrypt TEST_DB='mysql://root:@localhost/migrate_dev'
+    # - TEST_DB='mysql://root:@localhost/migrate_test'
+    # - PROD_DB='mysql://root:@localhost/migrate_prod'
+    #
+    # the default FLASK_CONFIG for testing has the correct DATABASE_URL
+    # - Use DATABASE_URL = $PROD_DB for migrations (encrypted)
+    - secure: "plxL5MLJXifjuQzBgwXv5PRBoIB/ysTM1UvCGt91uJpDJLZ2EUV39p/VmzlYI5y6bXQsMYw6zuPX5pAGnlTkoxZMKyoJNqEIdro6Z60bMrhWv7JDz/8AvDv3Bp/2rzxctBWAl5UMnhgtfpBO2VItHLMByWJjB9nS4MIEM1gt3PeyDtBohobNYTQIYWtf3RB1NUsXKv2gLstuOLT3ey+rqHNgSfnfM+T7tXLaM9vBZNETm5IjBbrWZk1tg9kWJ5Er97cdxk9BvM/Js9rCUrCv8iOVk6uFgS6qN3yNuPSU+cFcLVtnYCnQ263M6QQ8x7scporUYQfx1awxmgN/32tKEh2C0cWGLgsjfgy9oW/dRwHN5s3C6MBIb664UvRbuZ7bzY5cX79t4r3spFyv2F5lze8E9siBEp+9of+DbSzG6BWrlU4rD3i9euR5csLM0LtNVFq1Q06IAdpz8KQKTLr3R1Gva7dunTswecKzfAd/gw9tSUDfDFQgM5uCGpf2dxHGX7VuPJzBl86heN46aeZzuFiNYsSaN9rujtd//GkLXmDa876TyW3cgJAWSXv4wRKUyiCKCpfeF9Y9IuWp6n4bA0mqYKh9dy+ObAt5LXRYZ4nowzRS9COguYvvIt1NmEoEsf3itXp13IjPfCemiN5QXXe9BfpKAoV8j/I4zprlRQg="
+
+before_install:
+    # ENCRYPT YOUR PRIVATE KEY (If you need authentication)
+    # 1. Install and login to the Travis CLI:
+    #       $ gem install travis
+    #       $ travis login
+    # 2. Move your json private key to client_secrets.json
+    # 3. Run:
+    #       $ travis encrypt-file client_secrets.json --add
+    # 4. Commit changes:
+    #       $ git add client_secrets.json.enc
+    #       $ git commit client_secrets.json.enc .travis.yml
+
+  ## Handles client_secrets.json
+  - openssl aes-256-cbc -K $encrypted_e753487dd135_key -iv $encrypted_e753487dd135_iv -in client_secrets.json.enc -out client_secrets.json -d
+
+  ## Download and install google-cloud-sdk
+  - if [ ! -d $HOME/gcloud/google-cloud-sdk ]; then
+          mkdir -p $HOME/gcloud &&
+          wget https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz --directory-prefix=$HOME/gcloud &&
+          cd $HOME/gcloud &&
+          tar xzf google-cloud-sdk.tar.gz &&
+          printf '\ny\n\ny\ny\n' | ./google-cloud-sdk/install.sh &&
+          cd $TRAVIS_BUILD_DIR;
+    fi
+
+  ## update to the latest components
+  - gcloud -q components update app
+
+  ## use client_secrets.json to auth against gcloud
+  - if [ -a client_secrets.json ]; then
+          gcloud -q auth activate-service-account --key-file client_secrets.json;
+    fi
+
+install:
+  ## app specific setup
+  - pip install -t lib -r requirements/common.txt
+  - pip install -r requirements/dev.txt
+  - pip install virtualenvwrapper
+  - pip install coveralls
+  - source virtualenvwrapper.sh
+  - add2virtualenv ./lib
+  - add2virtualenv $HOME/gcloud/google-cloud-sdk/platform/google_appengine
+  - gcloud config set project russomi-apps
+
+before_script:
+  - mysql -e 'create database flasky_appengine_test;'
+  - FLASK_CONFIG=testing python manage.py db upgrade
+
+script:
+  ### Examples:
+  # - python testrunner.py $HOME/gcloud/google-cloud-sdk ./tests
+  # - coverage run --source . testrunner.py $HOME/gcloud/google-cloud-sdk ./tests
+  - coverage run --source app manage.py test
+
+after_success:
+  - coveralls
+  - gcloud -q preview app deploy app.yaml --version=1
+  # We have to override the DATABASE_URL since we need to allow travis to do the DB migration
+  # remotely!
+  - FLASK_CONFIG=production DATABASE_URL=$PROD_DB python manage.py db upgrade
