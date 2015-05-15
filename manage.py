@@ -77,7 +77,12 @@ def test(coverage=False, with_gae=True, flask_config='testing'):
     import unittest
 
     tests = unittest.TestLoader().discover('tests')
-    unittest.TextTestRunner(verbosity=2).run(tests)
+    result = unittest.TextTestRunner(verbosity=2).run(tests)
+
+    # Fail the build if the suite was not successful!
+    if not result.wasSuccessful():
+        sys.exit(result)
+
     if COV:
         COV.stop()
         COV.save()
