@@ -1,4 +1,4 @@
-Flasky
+Flasky [![Build Status](https://travis-ci.org/russomi/flasky-appengine.svg?branch=add-travis-ci)](https://travis-ci.org/russomi/flasky-appengine) [![Coverage Status](https://coveralls.io/repos/russomi/russomi-apps/badge.svg)](https://coveralls.io/r/russomi/russomi-apps)
 ======
 
 This repository contains the source code examples for my O'Reilly book [Flask Web Development](http://www.flaskbook.com).
