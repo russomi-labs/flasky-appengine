@@ -72,7 +72,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     MAIL_USE_GAE = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'mysql://root:@russomi-apps:production/flasky_appengine_production'
+                              'mysql+mysqldb://root@/flasky_appengine_production?unix_socket=/cloudsql/russomi-apps:production'
 
     # @classmethod
     # def init_app(cls, app):
