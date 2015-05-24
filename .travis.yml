@@ -10,7 +10,7 @@ env:
     - PATH=$PATH:$HOME/gcloud/google-cloud-sdk/bin GOOGLE_APPLICATION_CREDENTIALS=$TRAVIS_BUILD_DIR/client_secrets.json
     - versionlabel=$(git rev-parse --abbrev-ref HEAD)-$(date -u +"%Y%m%d-%H%M%S")
     # Temporary pin of gcloud version since the latest broke deploy!
-    - CLOUDSDK_COMPONENT_MANAGER_SNAPSHOT_URL=dl.google.com/dl/cloudsdk/release/components-v0.9.60.json
+    - CLOUDSDK_COMPONENT_MANAGER_SNAPSHOT_URL=https://dl.google.com/dl/cloudsdk/release/components-v0.9.60.json
     ### define secure env variables for TEST_DB and PROD_DB
     ### examples:
     ### travis encrypt TEST_DB='mysql://root:@localhost/migrate_dev'
